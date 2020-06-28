@@ -18,6 +18,15 @@ jobs:
       - run: echo "Echo with sleep"
       - run: sleep 10
       - run: echo "My pipeline id is << pipeline.id >> and my git branch is << pipeline.git.branch >>"
+  print_envs:
+    environment:
+      MY_NAME: "Pius pipeline"
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run: echo "${MY_NAME} other env ${CIRCLE_WORKFLOW_ID:0:2} "
+      - run: echo "Circle job is ${CIRCLE_JOB} and pull request username is ${CIRCLE_PR_USERNAME}"
 workflows: # workflow is used to coordinate job execution. Some jobs may only get executed after others
   version: 2.1
   workflow_name: #use any convenient name for the workflow
@@ -26,4 +35,5 @@ workflows: # workflow is used to coordinate job execution. Some jobs may only ge
       - first_job:
           requires:
             - second_job
+      - print_envs
 
