@@ -25,8 +25,8 @@ workflows: # workflow is used to coordinate job execution. Some jobs may only ge
   version: 2
   workflow_name: #use any convenient name for the workflow
     jobs: #list the jobs this workflow should run
-      - print_hello:
-          requires:
-            - second_job
+      - print_hello
+          # requires:
+          #   - second_job
       - second_job
 
