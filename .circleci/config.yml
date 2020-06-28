@@ -40,7 +40,7 @@ jobs:
         paths: #paths relative to the workspace  root. Must not be root itself
           #- file/share/output.txt #directory /tmp/workspace/file/share now exiists
           #- share      # directory /tmp/workspace/share now exists.
-          - ~/output.txt
+          - output.txt
   print_out_workspace:
     docker:
       - image: circleci/node:13.8.0
