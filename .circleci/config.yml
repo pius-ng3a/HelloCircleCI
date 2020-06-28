@@ -33,6 +33,7 @@ jobs:
     steps:
      - checkout
      #- run: mkdir ~/tmp/workspace
+     - run: mkdir ~/tmp/workspace
      - run: echo "value to store in file" > ~/output.txt #tmp/workspace/output.txt
 
      - persist_to_workspace: # this saves a file to workspace for sharing
