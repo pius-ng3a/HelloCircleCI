@@ -45,7 +45,7 @@ jobs:
       - checkout
       - run: echo "This is attach to workspace"
       - attach_workspace:
-          -at file/share
+          at: file/share
       - run: cat output.txt
 
 workflows: # workflow is used to coordinate job execution. Some jobs may only get executed after others
