@@ -27,6 +27,27 @@ jobs:
       - checkout
       - run: echo "${MY_NAME} other env ${CIRCLE_WORKFLOW_ID:0:2} "
       - run: echo "Circle job is ${CIRCLE_JOB} and pull request username is ${CIRCLE_PR_USERNAME}"
+  create_file_to_share:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+     - checkout
+     - run: echo "value to store in file" > output.txt
+     - persist_to_workspace: # this saves a file to workspace for sharing
+        root: /tmp/workspace #required for persist workspace. It can be an absolute path or one relative to pwd
+        paths: #paths relative to the workspace  root. Must not be root itself
+          - file/share #directory /tmp/workspace/file/share now exiists
+          - share      # directory /tmp/workspace/share now exists.
+  print_out_workspace:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run: echo "This is attach to workspace"
+      - attach_workspace:
+          -at file/share
+      - run: cat output.txt
+
 workflows: # workflow is used to coordinate job execution. Some jobs may only get executed after others
   version: 2.1
   workflow_name: #use any convenient name for the workflow
@@ -36,4 +57,7 @@ workflows: # workflow is used to coordinate job execution. Some jobs may only ge
           requires:
             - second_job
       - print_envs
-
+      - print_out_workspace:
+          requires:
+            - persist_to_workspace
+      - persist_to_workspace
