@@ -3,18 +3,7 @@ version: 2.1
 orbs:
   node: circleci/node@1.1
 jobs:
-  print_hello:
-    docker: #using the docker executor
-      -image: circleci/ruby:2.4.1 #docker image to use
-    #Steps are list of commands to be executed in the docker executor
-    steps:
-      - checkout # tells the CI_CD to pull code from github
-      - run: echo "hello from first Job"
-      - run: sleep 25
-      #- node/with-cache:
-      #    steps:
-      #      - run: npm install
-      #- run: npm run test
+  
   second_job:
     docker:
       - image: circleci/ruby:2.4.1
@@ -25,8 +14,5 @@ workflows: # workflow is used to coordinate job execution. Some jobs may only ge
   version: 2.1
   workflow_name: #use any convenient name for the workflow
     jobs: #list the jobs this workflow should run
-      - print_hello
-          # requires:
-          #   - second_job
       - second_job
 
