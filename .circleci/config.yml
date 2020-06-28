@@ -32,14 +32,15 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
      - checkout
-     - run: mkdir ~/tmp/workspace
-     - run: echo "value to store in file" > ~/tmp/workspace/output.txt
+     #- run: mkdir ~/tmp/workspace
+     - run: echo "value to store in file" > ~/output.txt #tmp/workspace/output.txt
 
      - persist_to_workspace: # this saves a file to workspace for sharing
-        root: ~/tmp/workspace #required for persist workspace. It can be an absolute path or one relative to pwd
+        root: ~/ #required for persist workspace. It can be an absolute path or one relative to pwd
         paths: #paths relative to the workspace  root. Must not be root itself
-          - file/share/output.txt #directory /tmp/workspace/file/share now exiists
-          - share      # directory /tmp/workspace/share now exists.
+          #- file/share/output.txt #directory /tmp/workspace/file/share now exiists
+          #- share      # directory /tmp/workspace/share now exists.
+          - ~/output.txt
   print_out_workspace:
     docker:
       - image: circleci/node:13.8.0
@@ -47,8 +48,8 @@ jobs:
       - checkout
       - run: echo "This is attach to workspace"
       - attach_workspace:
-          at: ~/tmp/workspace
-      - run: cat ~/tmp/workspace/output.txt
+          at: ~/     #/tmp/workspace
+      - run: cat ~/output.txt  #tmp/workspace/output.txt
 
 workflows: # workflow is used to coordinate job execution. Some jobs may only get executed after others
   version: 2.1
