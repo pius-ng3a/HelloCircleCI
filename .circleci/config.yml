@@ -81,7 +81,7 @@ jobs:
     steps:
       - return 1 #this step simply fails
       - run: 
-          echo "it FAILED"
+          - echo "it FAILED"
           when: on_fail
 
 
