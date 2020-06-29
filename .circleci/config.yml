@@ -79,9 +79,10 @@ jobs:
   testing_failure:
     executor: lw_executor
     steps:
-      - return 1 #this step simply fails
+      - run: return 1 #this step simply fails
       - run:
-          - echo "Failed" 
+          
+          command: echo "Failed" 
           when: on_fail
 
 
