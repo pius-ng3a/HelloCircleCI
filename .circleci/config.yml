@@ -17,6 +17,9 @@ executors:
   general-executor:
     docker:
       - image: circleci/ruby:2.4.1
+  lw_executor:
+    docker:
+      - image: circleci/node:13.8.0
 orbs:
   node: circleci/node@1.1
 jobs:
@@ -73,6 +76,14 @@ jobs:
     steps:
       - print_command_one:
           to: "Your first print job using a defined command!"
+  testing_failure:
+    executor: lw_executor
+    steps:
+      - return 1 #this step simply fails
+      - run: 
+          echo "it FAILED"
+          when: on_fail
+
 
 workflows: # workflow is used to coordinate job execution. Some jobs may only get executed after others
   version: 2.1
@@ -88,3 +99,4 @@ workflows: # workflow is used to coordinate job execution. Some jobs may only ge
             - create_file_to_share
       - create_file_to_share
       - using_commands
+      - testing_failure
