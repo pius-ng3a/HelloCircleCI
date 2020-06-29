@@ -80,8 +80,8 @@ jobs:
     executor: lw_executor
     steps:
       - return 1 #this step simply fails
-      - run: 
-          - echo "it FAILED"
+      - run:
+          - echo "Failed" 
           when: on_fail
 
 
