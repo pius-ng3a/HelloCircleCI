@@ -81,9 +81,20 @@ jobs:
     steps:
       - run: return 1 #this step simply fails
       - run:
-          
+          name: on error 
           command: echo "Failed" 
           when: on_fail
+  create_infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Ensure backend infrastructure exists
+          command: |
+            aws cloudformation deploy \
+              --template-file template.yml \
+              --stack-name my_stack
 
 
 workflows: # workflow is used to coordinate job execution. Some jobs may only get executed after others
@@ -100,4 +111,5 @@ workflows: # workflow is used to coordinate job execution. Some jobs may only ge
             - create_file_to_share
       - create_file_to_share
       - using_commands
-      - testing_failure
+      - testing_failure #this job is meant to fail. No alarm.
+      - create_infrastructure
