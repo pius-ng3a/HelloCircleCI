@@ -87,3 +87,4 @@ workflows: # workflow is used to coordinate job execution. Some jobs may only ge
           requires:
             - create_file_to_share
       - create_file_to_share
+      - using_commands
