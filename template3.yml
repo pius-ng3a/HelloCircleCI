@@ -5,6 +5,7 @@ Resources:
         SecurityGroups:
           - !Ref InstanceSecurityGroup
         KeyName: CI_CD_Key
+        InstanceType: "t2.micro"
         ImageId: 'ami-026dea5602e368e96'
     InstanceSecurityGroup:
       Type: 'AWS::EC2::SecurityGroup'
