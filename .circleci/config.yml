@@ -94,7 +94,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file template3.yml \
-              --stack-name my_stack
+              --stack-name MyStack
 
 
 workflows: # workflow is used to coordinate job execution. Some jobs may only get executed after others
