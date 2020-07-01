@@ -111,16 +111,7 @@ jobs:
          name: Configure server
          command: |
           ansible-playbook -i inventory2.txt main-remote.yml #mainremote represents the plabook with instructions to execute
-  smoke_test: #this job should test if all is still ok on the system.
-    docker:
-      - image: alpine:latest
-    steps:
-      name: "install dependencies curl."
-      become: true
-      apt:
-        name: ["curl"]
-        state: latest
-        update_cache: yes 
+ 
 
 workflows: # workflow is used to coordinate job execution. Some jobs may only get executed after others
   version: 2.1
