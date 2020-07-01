@@ -95,7 +95,22 @@ jobs:
             aws cloudformation deploy \
               --template-file template3.yml \
               --stack-name MyStack
-
+  configure_infastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_key:
+        fingerprints: ["34:fb:e6:69:96:ef:69:7c:6d:de:98:a9:e0:c4:01:1c"]
+      - run: 
+         name: install dependencies
+         command: |
+           apk add --update ansible #install the dependencies 
+      - run:
+         name: Configure server
+         command: |
+          ansible-playbook -i inventory2.txt main-remote.yml #mainremote represents the plabook with instructions to execute
+        
 
 workflows: # workflow is used to coordinate job execution. Some jobs may only get executed after others
   version: 2.1
@@ -113,3 +128,6 @@ workflows: # workflow is used to coordinate job execution. Some jobs may only ge
       - using_commands
       - testing_failure #this job is meant to fail. No alarm.
       - create_infrastructure #this should work not working yet
+      - configure_infastructure:
+          requires:
+           - create_infrastructure
