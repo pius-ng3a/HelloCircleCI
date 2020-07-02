@@ -102,7 +102,8 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["b2:b4:50:7f:3c:2f:b0:46:53:34:8e:69:7c:a9:fa:81"]
+          fingerprints: 
+            - "34:fb:e6:69:96:ef:69:7c:6d:de:98:a9:e0:c4:01:1c"
       - run: 
          name: install dependencies
          command: |
@@ -111,7 +112,7 @@ jobs:
          name: Configure server
          command: |
           ansible-playbook -i inventory2.txt main-remote.yml #mainremote represents the plabook with instructions to execute
-  
+ 
 
 workflows: # workflow is used to coordinate job execution. Some jobs may only get executed after others
   version: 2.1
