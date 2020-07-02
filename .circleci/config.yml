@@ -94,7 +94,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file template3.yml \
-              --stack-name MyStack
+              --stack-name MyStack2
   
   configure_infastructure: #job to configure infrastructure
     docker:
