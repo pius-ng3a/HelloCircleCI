@@ -114,7 +114,7 @@ jobs:
       - run:
          name: Configure server #the ssh -o should be a workaround for the continues failure to log in to the server
          command: |
-          ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-219-250-43.us-east-2.compute.amazonaws.com exit
+          # ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-219-250-43.us-east-2.compute.amazonaws.com exit
           ansible-playbook -i inventory2.txt main-remote.yml #mainremote represents the plabook with instructions to execute
   smoke_test:
     docker:
