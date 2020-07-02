@@ -103,7 +103,7 @@ jobs:
       - checkout
       - run: mkdir -p ~/.ssh
       - checkout
-      - run: echo $REMOTE_HOSTKEY >> ~/.ssh/known_hosts
+      - run: echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCUmOUlbJ+1ZbWne6K7p7aPJbPsC7vF0WoQmEGPPOUJk9eXcFwghAkQFBCiWci0n28wMxHRxg7M+fdTrnON8GBdCcL+jUC0KquR5Hz1dMs6OGXdqBw444EudZkHpm7Fm1WqjCkRvI12T23n//Zmw6nQuwI0lyNECEslgLg+mW5H/bHRMFV9CJ/Jfqdad5HsW+e4jQAJ/enLd05qoAcOkfKC37bhiFHYqJEPciO368TjVforyFP1/DQSAWZXFyPWzpjgj6PuOtlNA/OAAe9Yw9DeyQiiEdU0kdSdLDReUG4e2L6IA+k8ddkZ/nmr/sP3ZmQ88D/vg7l+70Mekg4kDmaH' >> ~/.ssh/known_hosts
       - add_ssh_keys:
           fingerprints: 
             - '34:fb:e6:69:96:ef:69:7c:6d:de:98:a9:e0:c4:01:1c'
