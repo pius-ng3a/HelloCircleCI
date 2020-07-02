@@ -13,6 +13,12 @@ commands:
     description: "to Print command environment variables"
     steps:
       - run: echo "Job is ${CIRCLE_JOB} and workflow is ${CIRCLE_WORKFLOW_ID:0:2}. The pipeline id is << pipeline.id >>"
+  destroy_environmte:
+    steps:
+      - run:
+          name: Destroy environment
+          command: |
+            aws cloudformation delete-stack --stack-name pro-${CIRCLE_WORKFLOW_ID}
 executors:
   general-executor:
     docker:
@@ -131,6 +137,21 @@ jobs:
             else
               return 1
             fi
+  create_infrastructure2:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Create Stack
+          command: |
+            aws cloudformation deploy \
+              --template-file template.yml \
+              --stack-name prod-${CIRCLE_WORKFLOW_ID}
+      - run: return 1
+      - destroy_environment
+        when: on_fail
+          
 
 workflows: # workflow is used to coordinate job execution. Some jobs may only get executed after others
   version: 2.1
@@ -149,6 +170,7 @@ workflows: # workflow is used to coordinate job execution. Some jobs may only ge
       - testing_failure #this job is meant to fail. No alarm.
       - create_infrastructure #this should work not working yet
       - smoke_test # run a test on server
+      - build
       - configure_infrastructure:
           requires:
            - create_infrastructure
