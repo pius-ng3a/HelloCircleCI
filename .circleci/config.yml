@@ -170,7 +170,7 @@ workflows: # workflow is used to coordinate job execution. Some jobs may only ge
       - testing_failure #this job is meant to fail. No alarm.
       - create_infrastructure #this should work not working yet
       - smoke_test # run a test on server
-      -create_infrastructure2
+      - create_infrastructure2
       - configure_infrastructure:
           requires:
            - create_infrastructure
