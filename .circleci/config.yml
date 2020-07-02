@@ -105,7 +105,7 @@ jobs:
       - run: echo $REMOTE_HOSTKEY >> ~/.ssh/known_hosts
       - add_ssh_keys:
           fingerprints: 
-            - "34:fb:e6:69:96:ef:69:7c:6d:de:98:a9:e0:c4:01:1c"
+            - '34:fb:e6:69:96:ef:69:7c:6d:de:98:a9:e0:c4:01:1c'
       - run: 
          name: install dependencies
          command: |
