@@ -111,7 +111,7 @@ jobs:
       - run:
          name: Configure server
          command: |
-          ansible-playbook -i inventory2.txt main-remote.yml #mainremote represents the plabook with instructions to execute
+          ansible-playbook -i inventory main-remote.yml #mainremote represents the plabook with instructions to execute
   
 
 workflows: # workflow is used to coordinate job execution. Some jobs may only get executed after others
