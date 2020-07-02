@@ -96,7 +96,7 @@ jobs:
               --template-file template3.yml \
               --stack-name MyStack2
   
-  configure_infastructure: #job to configure infrastructure
+  configure_infrastructure: #job to configure infrastructure
     docker:
       - image: python:3.7-alpine3.11
     steps:
@@ -147,6 +147,6 @@ workflows: # workflow is used to coordinate job execution. Some jobs may only ge
       - testing_failure #this job is meant to fail. No alarm.
       - create_infrastructure #this should work not working yet
       - smoke_test # run a test on server
-      - configure_infastructure:
+      - configure_infrastructure:
           requires:
            - create_infrastructure
