@@ -102,6 +102,7 @@ jobs:
     steps:
       - checkout
       - run: mkdir -p ~/.ssh
+      - checkout
       - run: echo $REMOTE_HOSTKEY >> ~/.ssh/known_hosts
       - add_ssh_keys:
           fingerprints: 
