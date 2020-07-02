@@ -13,7 +13,7 @@ commands:
     description: "to Print command environment variables"
     steps:
       - run: echo "Job is ${CIRCLE_JOB} and workflow is ${CIRCLE_WORKFLOW_ID:0:2}. The pipeline id is << pipeline.id >>"
-  destroy_environmte:
+  destroy_environment:
     steps:
       - run:
           name: Destroy environment
