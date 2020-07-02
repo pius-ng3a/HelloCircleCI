@@ -137,7 +137,7 @@ jobs:
             else
               return 1
             fi
-  create_infrastructure2:
+  create_infrastructure2: #implementing rollback. This happens when a failure occurs. 
     docker:
       - image: amazon/aws-cli
     steps:
@@ -151,7 +151,65 @@ jobs:
       - run: return 1
       - destroy_environment
       - when: on_fail
-          
+  create_and_deploy_front_end: # job that deploys files each time to the server
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Create frontend and destroy old front end
+          command: |
+            aws cloudformation deploy \
+              --template-file bucket.yml \
+              --stack-name "${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides PipelineID="${CIRCLE_WORKFLOW_ID:0:7}"
+      - run: aws s3 sync . s3://"${CIRCLE_WORKFLOW_ID}" --delete # why delete? 
+
+  get_last_deployment_id:  #job to query the id of the latest deployed service. We query and save the command in accessible worspace
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run: mkdir ~/tmp
+      - run: mkdir ~/tmp/workspace
+      - run:
+          name: Query ID
+          command: |
+            aws cloudformation \
+              list-exports --query "Exports[?Name==\`PipelineID\`].Value" \
+              --no-paginate --output text > ~/tmp/workspace/lastId.txt
+      - persist_to_workspace: # this saves a file to workspace for sharing
+          root: ~/tmp/workspace #required for persist workspace. It can be an absolute path or one relative to pwd
+          paths: #paths relative to the workspace  root. Must not be root itself
+            - lastId.txt
+  promote_to_production: # executes cloudfront  
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: promote to production newly deployed
+          command: | 
+            aws cloudformation deploy \
+              --template-file cloudfront.yml \
+              --stack-name production-distro \
+              --parameter-overrides PipelineID="${CIRCLE_WORKFLOW_ID}" 
+  clean_up_old_front_end: # destroys previous production on S3
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/tmp/workspace
+      - run: PreviousPipelineID="$(cat ~/tmp/workspace/lastId.txt | base64)"
+      - run:
+          name: Clean-up old front end
+          command: |
+            aws s3 rm "s3://${OldPipelineID}" --recursive
+            aws cloudformation delete-stack --stack-name "${PreviousPipelineID}"
+
+# BUCKET ENDPOINT
+# http://bucket1udacity.s3-website.us-east-2.amazonaws.com
 
 workflows: # workflow is used to coordinate job execution. Some jobs may only get executed after others
   version: 2.1
@@ -174,3 +232,13 @@ workflows: # workflow is used to coordinate job execution. Some jobs may only ge
       - configure_infrastructure:
           requires:
            - create_infrastructure
+      - create_and_deploy_front_end
+      - get_last_deployment_id:
+          requires:
+            - create_and_deploy_front_end
+      - promote_to_production:
+          requires:
+            - get_last_deployment_id
+      - clean_up_old_front_end:
+          requires:
+            - promote_to_production
