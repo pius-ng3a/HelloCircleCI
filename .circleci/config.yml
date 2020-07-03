@@ -175,8 +175,8 @@ jobs:
       - run:
           name: Query ID
           command: |
-            apt update -q
-            apt install -y -q tar
+            apt-get update -q
+            apt-get install -y -q tar
             aws cloudformation \
               list-exports --query "Exports[?Name==\`PipelineID\`].Value" \
               --no-paginate --output text > ~/tmp/workspace/lastId.txt
