@@ -157,13 +157,14 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Create frontend and destroy old front end
-          command: |
-            aws cloudformation deploy \
-              --template-file bucket.yml \
-              --stack-name "${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides PipelineID="${CIRCLE_WORKFLOW_ID:0:7}"
+         name: create frontend and destroy old
+         comman: |
+          aws cloudformation deploy \
+           --template-file bucket.yml \
+           --stack-name "${CIRCLE_WORKFLOW_ID:0:7}" \
+           --parameter-overrides PipelineID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run: aws s3 sync . s3://"${CIRCLE_WORKFLOW_ID}" -- delete 
+    
       
   get_last_deployment_id:  #job to query the id of the latest deployed service. We query and save the command in accessible worspace
     docker:
