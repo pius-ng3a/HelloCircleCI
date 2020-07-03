@@ -158,7 +158,7 @@ jobs:
       - checkout
       - run:
          name: create frontend and destroy old
-         comman: |
+         command: |
           aws cloudformation deploy \
            --template-file bucket.yml \
            --stack-name "${CIRCLE_WORKFLOW_ID:0:7}" \
