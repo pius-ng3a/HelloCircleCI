@@ -151,20 +151,20 @@ jobs:
       - run: return 1
       - destroy_environment
       - when: on_fail
-  create_and_deploy_front_end: # job that deploys files each time to the server
+  deploy_and_create_frontend:
     docker:
       - image: amazon/aws-cli
     steps:
       - checkout
       - run:
-          name: create frontend and destroy old
-          command: |
+          name: fronted creation and destroy of old version
+          command: | 
             aws cloudformation deploy \
               --template-file bucket.yml \
-              --stack-name ${CIRCLE_WORKFLOW_ID:0:7} \
+              --stack-name "${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides PipelineID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run: aws s3 sync . s3://"${CIRCLE_WORKFLOW_ID}" -- delete
-     
+ 
       
   get_last_deployment_id:  #job to query the id of the latest deployed service. We query and save the command in accessible worspace
     docker:
@@ -233,7 +233,7 @@ workflows: # workflow is used to coordinate job execution. Some jobs may only ge
       - configure_infrastructure:
           requires:
            - create_infrastructure
-      - create_and_deploy_front_end
+      - deploy_and_create_frontend
       - get_last_deployment_id:
           requires:
             - create_and_deploy_front_end
