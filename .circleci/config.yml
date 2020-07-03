@@ -166,7 +166,7 @@ jobs:
       - run: aws s3 sync . s3://"d${CIRCLE_WORKFLOW_ID:2:5}" --delete
         
   get_last_deployment_id:  #job to query the id of the latest deployed service. We query and save the command in accessible worspace
-    docker:
+    docker: #NEEDS TAR TO BE ABLE TO EXPORT THE VALUE INTO A STORAGE. NOTE YET DONE. 
       - image: amazon/aws-cli
     steps:
       - checkout
@@ -175,6 +175,8 @@ jobs:
       - run:
           name: Query ID
           command: |
+            sudo apt update -q
+            sudo apt install -y -q tar
             aws cloudformation \
               list-exports --query "Exports[?Name==\`PipelineID\`].Value" \
               --no-paginate --output text > ~/tmp/workspace/lastId.txt
