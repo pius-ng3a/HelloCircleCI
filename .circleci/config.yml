@@ -236,7 +236,7 @@ workflows: # workflow is used to coordinate job execution. Some jobs may only ge
       - deploy_and_create_frontend
       - get_last_deployment_id:
           requires:
-            - create_and_deploy_front_end
+            - deploy_and_create_frontend
       - promote_to_production:
           requires:
             - get_last_deployment_id
