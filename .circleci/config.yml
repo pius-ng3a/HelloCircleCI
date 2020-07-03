@@ -168,6 +168,7 @@ jobs:
   get_last_deployment_id:  #job to query the id of the latest deployed service. We query and save the command in accessible worspace
     docker: #NEEDS TAR TO BE ABLE TO EXPORT THE VALUE INTO A STORAGE. NOTE YET DONE. 
       - image: amazon/aws-cli
+      - image: circleci/node:8.11.2
     steps:
       - checkout
       - run: mkdir ~/tmp
